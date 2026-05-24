@@ -1,0 +1,15 @@
+<h1>My App</h1>
+<br>
+<app-title nome="Teste"></app-title>
+
+<app-check-sample *ngIf="isAliveCheckSample"></app-check-sample>
+
+<button (click)="disposeChekSample()">Destruir</button>
+<button (click)="openChekSample()">Abrir</button>
+
+<br>
+<hr>
+
+<a href="https://github.com/felipeAguiarCode/angular-playground/tree/main/C6%20-%20Life%20Cycle%20Hooks" title="Life Cycle Hooks"
+text="Life Cycle Hooks" target="_blank">Life Cycle Hooks</a>
+<router-outlet></router-outlet>

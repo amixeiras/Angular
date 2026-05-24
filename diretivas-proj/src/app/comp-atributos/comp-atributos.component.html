@@ -1,0 +1,28 @@
+<p [ngClass]="estilo">comp-atributos works!</p>
+<button (click)="mudar()">Trocar</button>
+<h1 [ngStyle]="{ 'background' : corFundo}">Curso Angular</h1>
+
+<input type="text" [(ngModel)]="item" />
+<p> {{ item }}</p>
+
+<button (click)="adicionarLista()">Adicionar lista</button>
+
+<ul>
+    <li *ngFor="let element of lista">{{ element }}</li>
+</ul>
+
+<hr>
+
+<ng-template [ngIf]="isEnabledBlock">
+    <a href="#">Finalizar Compra</a>
+</ng-template>
+<br>
+<ng-template [ngIf]="isEnabledBlock">
+    <a href="#">Adicionar ao carrinho</a>
+</ng-template>
+
+<ng-content select="#teste"></ng-content>
+
+<a href="https://github.com/felipeAguiarCode/angular-playground/tree/main/C7%20-%20Diretivas" title="Diretivas" target="_blank">
+    Diretivas
+</a>

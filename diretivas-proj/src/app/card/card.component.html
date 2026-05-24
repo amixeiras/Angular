@@ -1,0 +1,29 @@
+<p *ngIf="true">card works!</p>
+<hr>
+<ul>
+    <li *ngFor="let p of produtos; let i = index" (click)="remover(i)"> 
+        {{ i }} - {{ p }} 
+    </li>
+    <button (click)="adicionar()">Adicionar</button>
+</ul>
+<hr>
+<div [ngSwitch]="menuType">
+    <div *ngSwitchCase="'user'">
+        <ul>
+            <li>Editar usuario</li>
+            <li>adicionar cartão</li>
+        </ul>
+    </div>
+    <div *ngSwitchCase="'admin'">
+        <ul>
+            <li>Editar usuario</li>
+            <li>adicionar cartão</li>
+            <li>gerenciar usuarios</li>
+            <li>gerenciar cartões</li>
+        </ul>
+    </div>
+    <div *ngSwitchDefault>
+        <p>Usuario não encontrado</p>
+    </div>
+</div>
+<button (click)="habilitarAdmin()">Habilitar Admin</button> | <button (click)="habilitarUser()">Habilitar User</button>

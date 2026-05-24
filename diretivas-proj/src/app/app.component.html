@@ -1,0 +1,16 @@
+<app-card *ngIf="isAliveCard else anotherBlock"></app-card>
+
+<ng-template #anotherBlock>
+  <p>Olá estou escondido</p>
+</ng-template>
+
+<hr>
+
+<app-comp-atributos>
+  <div id="teste">
+    <h1>Olá</h1>
+  </div>
+  
+</app-comp-atributos>
+
+<router-outlet></router-outlet>

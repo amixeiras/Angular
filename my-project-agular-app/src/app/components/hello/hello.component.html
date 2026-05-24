@@ -1,0 +1,37 @@
+<div class="mb-3">
+    <div class="col-md-12">
+        <span>{{name}}</span>
+    </div>
+</div>
+<!-- property bindig -->
+<div class="row align-items-start">
+    <div class="col-md-6">
+        <my-button [text]="text" [btClass]="btClass"></my-button>
+    </div>
+</div>
+<div class="row align-items-start">
+    <div class="col-md-6">
+        <my-button [text]="'Terceiro Botão'" [btClass]="'btn btn-success'"></my-button>
+    </div>
+</div>
+<!--Interpolação-->
+<div class="row align-items-start">
+    <div class="col-md-12">
+        <my-button text="Segundo Botão" btClass="btn btn-danger"></my-button>
+    </div>
+</div>
+<div class="row align-items-start">
+    <div class="col-md-12">
+        <my-button text="{{ 'TEste' }}" btClass="{{ btClass }}"></my-button>
+    </div>
+</div>
+
+<!--Eventos-->
+<div class="row align-items-start">
+    <div class="col-md-12">
+        <my-button text="{{ 'evento' }}" btClass="btn btn-success" (eventclick)="helloWord('Chamando um evento')"></my-button>
+    </div>
+</div>
+
+<!--Tow Way-->
+<my-input></my-input>
