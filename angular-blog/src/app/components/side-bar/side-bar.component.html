@@ -1,0 +1,35 @@
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Interface
+    </div>
+
+    <app-li-nav-item [nav_id]="'liComponent'" [nav_title]="'Components'" nav_link_icon="fas fa-fw fa-cog" nav_collapse_header="Itens" >
+        <a class="collapse-item" href="buttons.html">Buttons</a>
+        <a class="collapse-item" href="cards.html">Cards</a>
+    </app-li-nav-item>
+
+     <!-- Divider -->
+    <hr class="sidebar-divider">
+
+     <app-li-nav-item [nav_id]="'liComponent2'" [nav_title]="'Utilities'" nav_link_icon="fas fa-fw fa-wrench" nav_collapse_header="Itens" >
+        <a class="collapse-item" href="utilities-color.html">Colors</a>
+                        <a class="collapse-item" href="utilities-border.html">Borders</a>
+                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
+                        <a class="collapse-item" href="utilities-other.html">Other</a>
+    </app-li-nav-item>
+</ul>
+<!-- End of Sidebar -->

@@ -1,0 +1,13 @@
+.container-big-card{
+    height: 99%;
+}
+
+.container-ng-content{
+    width: 99%;
+    text-align: justify;
+}
+.container-big-card-text{
+    width: 99%;
+    height: 100%;
+    overflow-y: auto;
+}
