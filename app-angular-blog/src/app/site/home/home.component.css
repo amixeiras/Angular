@@ -27,8 +27,7 @@ p {
 hr{
     color: white;
 }
-header{
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
+
+*{
+    color: white;
 }
