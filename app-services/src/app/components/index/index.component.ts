@@ -9,5 +9,9 @@ import { CardComponent } from '../card/card.component';
   styleUrl: './index.component.css'
 })
 export class IndexComponent {
+    search: string = '';
 
+    pesquisarPokemon(value: string){
+      this.search = value;
+    }
 }

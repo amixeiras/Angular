@@ -1,10 +1,19 @@
 <div class="index-container">
-    <div class="index-title">
-        <h1>Pokemons</h1>
-    </div>
+    <section id="title">
+        <div class="index-title">
+            <h1>Pokemons</h1>
+        </div>
+        <div class="index-menu">
+            <div class="index-search">
+                <label for="txtPokemon">Pesquisar Pokemon:</label>
+                <input type="text" #txtPokemon class="index-search-text">
+                <button (click)="pesquisarPokemon(txtPokemon.value)" class="index-search-button">Pesquisar</button>
+            </div>
+        </div>
+    </section>
+
     <div class="index-body">
-        <app-card title="Charmander" ></app-card>
+        <app-card title ="{{search}}"></app-card>
     </div>
     <div class="index-footer"></div>
 </div>
-

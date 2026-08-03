@@ -33,6 +33,30 @@
     height: 14%;
 }
 
+.index-search {
+    margin: 2px;
+}
+
+.index-search label {
+    font-size: x-large;
+    margin-right: 2px;
+}
+
+.index-search-text {
+    height: 20px;
+    margin-right: 5px;
+}
+
+.index-search-button {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #86868b;
+  border-radius: 6px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
 h1 {
     margin: 2px 0 0 0;
 }
