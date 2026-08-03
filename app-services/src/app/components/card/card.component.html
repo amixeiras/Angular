@@ -1,0 +1,13 @@
+<div class="card-container">
+    <div class="card-title">
+        <h3>{{ title }}</h3>
+    </div>
+    <div class="card-body">
+        <img src="{{ ipokemon.image_pokemon }}" alt="{{ title }}">
+    </div>
+    <div class="card-footer">
+        <span class="card-states-attribute" *ngFor="let type of ipokemon.type_pokemon">
+            <h4>{{ type }}</h4> 
+        </span>
+    </div>
+</div>
