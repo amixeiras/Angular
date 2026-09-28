@@ -1,0 +1,7 @@
+src/app/
+ ├── core/                # Configurações globais do app (app.config.ts, interceptors)
+ ├── shared/              # Componentes visuais genéricos, pipes e diretivas reutilizáveis
+ ├── domain/              # Entidades puras e interfaces (sem Angular/HTTP)
+ ├── infrastructure/      # Chamadas HTTP, mapeadores de dados e repositórios
+ ├── application/         # Casos de uso e Facades reativos (com Signals)
+ └── presentation/        # Componentes standalone, páginas e rotas locais
