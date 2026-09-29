@@ -13,6 +13,10 @@ export const routes: Routes = [
 		]
 	},
 	{
+		path: 'cliente/login/:route',
+		loadComponent: () => import('./features/client-area/login/cliente-login.component').then(({ ClienteLoginComponent }) => ClienteLoginComponent) 
+	},
+	{
 		path: ':brokerSlug',
 		children: [
 			{

@@ -1,8 +1,8 @@
 <main class="login-page">
     <form class="login-card" [formGroup]="form" (ngSubmit)="submit()">
         <p class="eyebrow">Administração</p>
-        <h1>Acesso administrativo</h1>
-        <p>Gerencie as configurações das corretoras.</p><label>E-mail<input type="email"
+        <h1>Acesso área cliente</h1>
+        <p>Gerencie seus dados e solicitações.</p><label>E-mail<input type="email"
                 formControlName="email" /></label><label>Senha<input type="password"
                 formControlName="password" /></label>@if (invalidCredentials) { <small class="error">E-mail ou senha
             inválidos.</small> }<button type="submit">Entrar</button><small class="hint">Demo: admin&#64;corretora.com /

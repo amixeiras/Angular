@@ -30,4 +30,9 @@ export class HomeComponent {
     if (this.quoteForm.invalid) { this.quoteForm.markAllAsTouched(); return; }
     window.dispatchEvent(new CustomEvent('broker-quote-requested', { detail: { broker: this.broker.slug, ...this.quoteForm.getRawValue() } }));
   }
+
+  login(): void {
+    window.dispatchEvent(new CustomEvent('broker-login-requested', { detail: { broker: this.broker.slug } }));
+  }
+
 }
