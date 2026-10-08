@@ -2,7 +2,16 @@
   <header class="client-header">
     <a class="brand" [routerLink]="['/', brokerSlug]"><img [src]="broker.logoUrl" [alt]="broker.name" /><span><strong>{{ broker.name }}</strong><small>{{ broker.tagline }}</small></span></a>
     <nav><a class="active" [routerLink]="['/', brokerSlug, 'cliente']">&#193;rea do cliente</a><a href="#">Simula&#231;&#245;es</a><a href="#">Administra&#231;&#227;o</a><a href="#contato">Contato</a></nav>
-    <button class="profile" type="button" (click)="menuOpen = !menuOpen"><span class="avatar">JS</span><span><strong>{{ clientData.client.name }}</strong><small>{{ clientData.client.role }}</small></span><span>&#8964;</span></button>
+    <div class="profile-menu">
+      <button class="profile" type="button" (click)="profileMenuOpen = !profileMenuOpen" [attr.aria-expanded]="profileMenuOpen">
+        <span class="avatar">JS</span><span><strong>{{ clientData.client.name }}</strong><small>{{ clientData.client.role }}</small></span><span>&#8964;</span>
+      </button>
+      @if (profileMenuOpen) {
+        <div class="profile-dropdown">
+          <button type="button" (click)="logout()">Sair</button>
+        </div>
+      }
+    </div>
   </header>
   <div class="client-body">
     <aside class="sidebar" [class.open]="menuOpen">

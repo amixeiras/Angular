@@ -1,9 +1,12 @@
 ﻿export interface InsuredPerson {
   id: number;
+  brokerId: number;
   name: string;
-  cpf: string;
+  cnpj: string;
   birthDate: string;
   email: string;
+  login: string;
+  password: string;
   phone: string;
   address: string;
   neighborhood: string;
@@ -11,6 +14,24 @@
   state: string;
   insurance: string;
   status: 'Ativo' | 'Pendente' | 'Em análise';
+}
+
+export interface InsuredRecord {
+  id: number;
+  clientId: number;
+  name: string;
+  sex: string;
+  document: string;
+  cnpj: string;
+  birthDate: string;
+  capital: string;
+  role: string;
+  registration: string;
+  movement: string;
+  email: string;
+  products: string;
+  lastRequest: string;
+  status: 'Ativo' | 'Pendente';
 }
 
 export interface InsuranceRequest {

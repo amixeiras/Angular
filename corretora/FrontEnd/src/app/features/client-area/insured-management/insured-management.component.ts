@@ -1,36 +1,28 @@
 ﻿import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClientDataService } from '../../../core/application/client-data.service';
+import { BrokerBrand } from '../../../core/domain/insurance-broker';
+import { InsuredRecord } from '../../../core/domain/insured-person';
+import { NotificationService } from '../../../core/application/notification.service';
 import { InsuredFilesComponent } from '../insured-files/insured-files.component';
 import { InsuredFilesReadonlyComponent } from '../insured-files-readonly/insured-files-readonly.component';
-
-interface InsuredRecord {
-  id: number;
-  name: string;
-  sex: string;
-  document: string;
-  birthDate: string;
-  capital: string;
-  role: string;
-  registration: string;
-  movement: string;
-  email: string;
-  products: string;
-  lastRequest: string;
-  status: 'Ativo' | 'Pendente';
-}
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({ selector: 'app-insured-management', standalone: true, imports: [CommonModule, ReactiveFormsModule, InsuredFilesComponent, InsuredFilesReadonlyComponent], templateUrl: './insured-management.component.html', styleUrl: './insured-management.component.scss' })
-export class InsuredManagementComponent {
+export class InsuredManagementComponent implements OnChanges {
+  @Input() clientId: number | null = null;
+  @Input() broker: BrokerBrand | null = null;
   readonly data = inject(ClientDataService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly notifications = inject(NotificationService);
   private readonly formBuilder = inject(FormBuilder);
   currentStep = 1;
   saved = false;
   formVisible = false;
   readOnly = false;
   editingIndex: number | null = null;
-  records: InsuredRecord[] = this.createMockRecords();
+  records: InsuredRecord[] = this.data.listInsuredForLoggedClient();
   readonly pageSizeOptions = [25, 50, 100, 150];
   pageSize = 25;
   currentPage = 1;
@@ -42,29 +34,23 @@ export class InsuredManagementComponent {
     registration: ['', Validators.required], movement: ['IN', Validators.required]
   });
 
-  private createMockRecords(): InsuredRecord[] {
-    const names = [
-      'João Silva', 'Maria Souza', 'Carlos Pereira', 'Ana Oliveira', 'Pedro Santos',
-      'Fernanda Costa', 'Lucas Almeida', 'Juliana Martins', 'Rafael Rodrigues', 'Camila Ferreira'
-    ];
-    const products = ['Auto, Residencial', 'Vida', 'Saúde, Viagem', 'Auto', 'Residencial, Vida'];
-    const roles = ['Analista', 'Gerente', 'Professor', 'Empresário', 'Assistente'];
+  constructor() {
+    this.data.insuredRecordsUpdated$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(clientId => {
+        if (clientId === (this.clientId ?? this.data.client.id)) this.loadRecords();
+      });
+  }
 
-    return Array.from({ length: 50 }, (_, index) => {
-      const name = index === 0 ? this.data.client.name : names[index % names.length];
-      const firstName = name.toLowerCase().split(' ')[0];
-      const status = index % 4 === 1 ? 'Pendente' : 'Ativo';
-      return {
-        id: index + 1, name,
-        sex: index % 2 === 0 ? 'Masculino' : 'Feminino',
-        document: `${98765432100 + index}`.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'),
-        birthDate: `${String((index % 27) + 1).padStart(2, '0')}/${String((index % 12) + 1).padStart(2, '0')}/19${80 + (index % 20)}`,
-        capital: `R$ ${(50000 + index * 2500).toLocaleString('pt-BR')}`,
-        role: roles[index % roles.length], registration: `MAT-${String(2300 + index)}`,
-        movement: 'IN - Inclusão', email: `${firstName}.${index + 1}@email.com`,
-        products: products[index % products.length], lastRequest: `${String((index % 27) + 1).padStart(2, '0')}/05/2026`, status
-      };
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['clientId'] || changes['broker']) this.loadRecords();
+  }
+
+  private loadRecords(): void {
+    this.records = this.clientId !== null && this.broker
+      ? this.data.listInsuredRecordsForClient(this.clientId, this.broker)
+      : this.data.listInsuredForLoggedClient();
+    this.currentPage = 1;
   }
 
   get paginatedRecords(): InsuredRecord[] {
@@ -85,20 +71,40 @@ export class InsuredManagementComponent {
 
   saveAndContinue(): void {
     this.saved = true;
-    if (this.insuredForm.invalid) { this.insuredForm.markAllAsTouched(); return; }
-    const formValue = this.insuredForm.getRawValue();
-    const record: InsuredRecord = {
-      ...formValue, id: formValue.id || Math.max(0, ...this.records.map(item => item.id)) + 1,
-      email: formValue.name ? `${formValue.name.toLowerCase().replace(/\s+/g, '.')}@email.com` : 'Não informado',
-      products: formValue.movement === 'EX' ? 'Nenhum' : 'Não informado', lastRequest: 'Não informado', status: 'Ativo'
-    };
-    if (this.editingIndex === null) {
-      this.records = [...this.records, record];
-    } else {
-      this.records = this.records.map((item, index) => index === this.editingIndex ? record : item);
-      this.editingIndex = null;
+    if (this.insuredForm.invalid) {
+      this.insuredForm.markAllAsTouched();
+      this.notifications.show('Preencha todos os campos obrigatórios para salvar os dados.', 'error');
+      return;
     }
-    this.currentStep = Math.min(this.currentStep + 1, 3);
+    const formValue = this.insuredForm.getRawValue();
+    const selectedClientId = this.clientId ?? this.data.client.id;
+    const editingRecordId = this.editingIndex === null ? null : this.records[this.editingIndex]?.id ?? null;
+    const editingRecord = editingRecordId === null
+      ? undefined
+      : this.records.find(item => item.id === editingRecordId && item.clientId === selectedClientId);
+    const linkedClientId = selectedClientId;
+    const linkedClient = this.data.getInsuredById(linkedClientId);
+    const record: InsuredRecord = {
+      ...editingRecord,
+      ...formValue,
+      id: editingRecord?.id ?? this.data.nextInsuredId(),
+      clientId: selectedClientId,
+      cnpj: editingRecord?.cnpj ?? linkedClient?.cnpj ?? 'Não informado',
+      email: editingRecord?.email ?? (formValue.name ? `${formValue.name.toLowerCase().replace(/\s+/g, '.')}@email.com` : 'Não informado'),
+      products: formValue.movement === 'EX' ? 'Nenhum' : editingRecord?.products ?? 'Não informado',
+      lastRequest: editingRecord?.lastRequest ?? 'Não informado',
+      status: editingRecord?.status ?? 'Ativo'
+    };
+    const selectedInsuredId = editingRecord?.id;
+    if (selectedInsuredId === undefined) this.data.addInsuredRecord(selectedClientId, record);
+    else this.data.updateInsuredRecord(selectedClientId, selectedInsuredId, record);
+    this.formVisible = false;
+    this.readOnly = false;
+    this.selectedInsured = null;
+    this.editingIndex = null;
+    this.currentStep = 1;
+    this.saved = false;
+    this.notifications.success('Dados salvos com sucesso.');
   }
 
   editRecord(index: number): void {
@@ -134,11 +140,16 @@ export class InsuredManagementComponent {
 
   deleteRecord(index: number): void {
     const record = this.records[index];
-    const confirmed = window.confirm(`Deseja realmente excluir o segurado ${record.name} (ID ${record.id})?`);
-    if (!confirmed) return;
+    this.notifications.alert(`Deseja realmente excluir o segurado ${record.name} (ID ${record.id})?`, () => this.confirmDelete(record.id));
+  }
 
-    this.records = this.records.filter((_, itemIndex) => itemIndex !== index);
-    if (this.editingIndex === index) this.editingIndex = null;
+  private confirmDelete(recordId: number): void {
+    const record = this.records.find(item => item.id === recordId);
+    if (!record) return;
+
+    this.records = this.records.filter(item => item.id !== recordId);
+    this.data.deleteInsuredRecord(record.clientId, recordId);
+    if (this.editingIndex !== null && this.records[this.editingIndex]?.id === recordId) this.editingIndex = null;
     if (this.selectedInsured?.id === record.id) {
       this.selectedInsured = null;
       this.filesPopupVisible = false;

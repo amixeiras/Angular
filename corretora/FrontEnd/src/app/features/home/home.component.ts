@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BrokerCatalogService } from '../../core/application/broker-catalog.service';
 
 @Component({
-  selector: 'app-home', standalone: true, imports: [CommonModule, ReactiveFormsModule],
+  selector: 'app-home', standalone: true, imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './home.component.html', styleUrl: './home.component.scss'
 })
 export class HomeComponent {

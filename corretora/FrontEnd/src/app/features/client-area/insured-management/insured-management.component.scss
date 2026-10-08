@@ -130,3 +130,52 @@ $grid-action: #0d4f79;
 .page-size { align-items: center; color: #687780; display: inline-flex; font-size: .7rem; gap: .35rem; }
 .page-size select { background: #fff; border: 1px solid #b8c7cf; border-radius: 3px; color: #283943; font-size: .7rem; padding: .25rem .35rem; }
 .pagination button:disabled { cursor: not-allowed; opacity: .4; }
+
+.dashboard {
+	padding: 2rem clamp(1.25rem, 4vw, 4.5rem) 4rem;
+}
+
+.dashboard.embedded {
+	padding: .35rem 0 1rem;
+
+	.records-grid {
+		margin-top: .4rem;
+
+		.table-wrap { max-height: 62vh; }
+	}
+}
+
+.records-grid {
+	margin-top: 1.8rem;
+
+	.grid-heading {
+		min-height: 3.1rem;
+		padding: .65rem 1rem;
+
+		h2 { font-size: 1rem; }
+		.grid-actions { gap: .7rem; }
+		.grid-actions > span { font-size: .75rem; }
+	}
+
+	.add-button {
+		font-size: .7rem;
+		padding: .55rem .85rem;
+	}
+
+	.table-wrap table { font-size: .78rem; }
+	.table-wrap th { font-size: .68rem; padding: .7rem .55rem; }
+	.table-wrap td { padding: .62rem .55rem; }
+	.table-wrap td small { font-size: .68rem; }
+	.client-avatar { flex-basis: 1.65rem; font-size: .75rem; height: 1.65rem; width: 1.65rem; }
+	.client-status { font-size: .62rem; padding: .28rem .4rem; }
+	.row-actions button { font-size: .62rem; height: 1.65rem; }
+	.pagination { padding: .7rem; }
+	.pagination button { font-size: .8rem; height: 1.65rem; min-width: 1.65rem; }
+}
+
+@media (max-width: 780px) {
+	.records-grid {
+		.grid-heading { padding: .65rem .8rem; }
+		.table-wrap table { font-size: .74rem; }
+	}
+}

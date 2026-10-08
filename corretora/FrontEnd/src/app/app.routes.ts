@@ -19,15 +19,23 @@ export const routes: Routes = [
 	{
 		path: ':brokerSlug',
 		children: [
+			{ path: 'admin/login', loadComponent: () => import('./features/client-admin/login/client-adm-login.component').then(({ ClientAdmLoginComponent }) => ClientAdmLoginComponent) },
+			{ path: 'admin/clientes', loadComponent: () => import('./features/client-admin/client-adm.component').then(({ ClientAdmComponent }) => ClientAdmComponent) },
 			{
 				path: 'cliente',
-				loadComponent: () => import('./features/client-area/client-shell.component').then(({ ClientShellComponent }) => ClientShellComponent),
 				children: [
+					{ path: 'login', loadComponent: () => import('./features/client-area/login/cliente-login.component').then(({ ClienteLoginComponent }) => ClienteLoginComponent) },
+					{
+						path: '',
+						loadComponent: () => import('./features/client-area/client-shell.component').then(({ ClientShellComponent }) => ClientShellComponent),
+						children: [
 					{ path: '', pathMatch: 'full', redirectTo: 'painel' },
 										{ path: 'painel', loadComponent: () => import('./features/client-area/dashboard/client-dashboard.component').then(({ ClientDashboardComponent }) => ClientDashboardComponent) },
 										{ path: 'solicitacoes', loadComponent: () => import('./features/client-area/requests/client-requests.component').then(({ ClientRequestsComponent }) => ClientRequestsComponent) },
 										{ path: 'documentos', loadComponent: () => import('./features/client-area/documents/client-documents.component').then(({ ClientDocumentsComponent }) => ClientDocumentsComponent) },
 										{ path: 'minha-conta', loadComponent: () => import('./features/client-area/account/client-account.component').then(({ ClientAccountComponent }) => ClientAccountComponent) }
+						]
+					}
 				]
 			},
 			{ path: '', pathMatch: 'full', loadComponent: () => import('./features/home/home.component').then(({ HomeComponent }) => HomeComponent) }
